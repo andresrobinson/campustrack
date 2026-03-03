@@ -77,7 +77,15 @@ class EnrollmentController
         }
         $status = $approve ? 'approved' : 'pending';
         Enrollment::create($pdo, $classId, $studentId, $status, $approve ? Auth::id() : null);
-        flash_set('success', $approve ? __('Enrollment approved.') : __('Enrollment requested.'));
+        $hasOther = Enrollment::hasOtherEnrollmentInCourse($pdo, (int) $class['course_id'], $studentId, $classId);
+        if ($hasOther) {
+            $message = $approve
+                ? __('Enrollment approved. Note: student is already enrolled in another class of this course.')
+                : __('Enrollment requested. Note: student is already enrolled in another class of this course.');
+        } else {
+            $message = $approve ? __('Enrollment approved.') : __('Enrollment requested.');
+        }
+        flash_set('success', $message);
         redirect('enrollments?class_id=' . $classId);
     }
 
@@ -99,8 +107,14 @@ class EnrollmentController
             flash_set('error', __('Enrollment is not pending.'));
             redirect('enrollments?class_id=' . $enrollment['class_id']);
         }
-        Enrollment::approve(db(), $id, Auth::id());
-        flash_set('success', __('Enrollment approved.'));
+        $pdo = db();
+        Enrollment::approve($pdo, $id, Auth::id());
+        $hasOther = Enrollment::hasOtherEnrollmentInCourse($pdo, (int) $enrollment['course_id'], (int) $enrollment['student_id'], (int) $enrollment['class_id']);
+        if ($hasOther) {
+            flash_set('success', __('Enrollment approved. Note: student is already enrolled in another class of this course.'));
+        } else {
+            flash_set('success', __('Enrollment approved.'));
+        }
         redirect('enrollments?class_id=' . $enrollment['class_id']);
     }
 
@@ -125,7 +139,9 @@ class EnrollmentController
 
     private function getEnrollment(int $id): ?array
     {
-        $stmt = db()->prepare('SELECT * FROM enrollments WHERE id = ? AND deleted_at IS NULL');
+        $stmt = db()->prepare(
+            'SELECT e.*, cl.course_id FROM enrollments e JOIN classes cl ON e.class_id = cl.id WHERE e.id = ? AND e.deleted_at IS NULL AND cl.deleted_at IS NULL'
+        );
         $stmt->execute([$id]);
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
         return $row ?: null;

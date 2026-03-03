@@ -2,14 +2,10 @@
 
 ## A. Discussed features still to implement
 
-1. **Student self-registration & approval flow** – Students can register; manager approves before they can log in.
-2. **Student enrollment in public courses** – Students can request enrollment in courses marked as public; teacher/manager approves.
-3. **Multiple-class warning for same course** – Warn when a student is enrolled in more than one class of the same course at the same time.
-4. **Hide grading where not applicable** – Do not show grading UI for courses where grading is disabled (`has_grading` = 0).
-5. **Per-student attendance view** – Dedicated view for a student’s attendance across lectures/classes.
-6. **Course-level GPA aggregation** – When a student took multiple classes of the same course, use the highest grade for the course.
-7. **Password reset** – Implement flow (code ready but not active due to lack of SMTP).
-8. **Setup script / installer** – CLI or web-based setup to create the database (if needed), run migrations in order, and perform basic environment checks for a smoother first-time installation.
+1. **Hide grading where not applicable** – Do not show grading UI for courses where grading is disabled (`has_grading` = 0).
+2. **Per-student attendance view** – Dedicated view for a student’s attendance across lectures/classes.
+3. **Course-level GPA aggregation** – When a student took multiple classes of the same course, use the highest grade for the course.
+4. **Password reset** – Implement flow (code ready but not active due to lack of SMTP).
 
 ---
 
@@ -30,6 +26,13 @@
 20. **Automated tests** – Add a small PHPUnit test suite for key business rules (attendance crediting, enrollment constraints, GPA formulas).
 21. **Dev environment / CI** – Optional Docker/devcontainer setup plus a GitHub Actions workflow to run tests and basic checks on each push.
 22. **Read-only JSON API** – Lightweight API endpoints (e.g. list courses/classes/attendance summaries) to allow external integrations or dashboards.
+
+## C. Completed items (from this list)
+
+- **Student self-registration & approval flow** – Students can register; manager approves before they can log in.
+- **Student enrollment in public courses** – Students can request enrollment in courses marked as public; teacher/manager approves.
+- **Multiple-class warning for same course** – Warn when a student is enrolled in more than one class of the same course at the same time.
+- **Setup script / installer** – CLI script (`php setup.php`) to create the database (if needed), run migrations in order, and perform basic environment checks for a smoother first-time installation.
 
 ---
 

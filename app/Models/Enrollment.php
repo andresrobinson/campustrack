@@ -66,4 +66,24 @@ class Enrollment
         $stmt->execute([$classId, $studentId]);
         return (bool) $stmt->fetchColumn();
     }
+
+    public static function hasOtherEnrollmentInCourse(PDO $pdo, int $courseId, int $studentId, ?int $excludeClassId = null): bool
+    {
+        $sql = 'SELECT 1
+                FROM enrollments e
+                JOIN classes cl ON e.class_id = cl.id
+                WHERE e.student_id = ?
+                  AND cl.course_id = ?
+                  AND e.status = ?
+                  AND e.deleted_at IS NULL
+                  AND cl.deleted_at IS NULL';
+        $params = [$studentId, $courseId, 'approved'];
+        if ($excludeClassId !== null) {
+            $sql .= ' AND e.class_id != ?';
+            $params[] = $excludeClassId;
+        }
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return (bool) $stmt->fetchColumn();
+    }
 }

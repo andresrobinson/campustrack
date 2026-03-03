@@ -18,6 +18,7 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="<?= url('dashboard') ?>"><?= __('dashboard') ?></a></li>
                     <?php if (\Core\Auth::isStudent()): ?>
+                    <li class="nav-item"><a class="nav-link" href="<?= url('student/classes') ?>"><?= __('My classes') ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="<?= url('reports/student') ?>"><?= __('My grades') ?></a></li>
                     <?php endif; ?>
                     <?php if (\Core\Auth::canManageCourses()): ?>

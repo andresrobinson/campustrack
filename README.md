@@ -1,6 +1,6 @@
-## School Attendance System (PHP / MariaDB / Bootstrap)
+## CampusTrack – School Attendance System (PHP / MariaDB / Bootstrap)
 
-This is a small school **attendance and grading system** built with **plain PHP 8.2**, **MariaDB/MySQL**, and **Bootstrap 5**, designed to run under WAMP/XAMPP and be accessed via `http://localhost/...`.
+CampusTrack is a small school **attendance and grading system** built with **plain PHP 8.2**, **MariaDB/MySQL**, and **Bootstrap 5**, designed to run under WAMP/XAMPP and be accessed via `http://localhost/...`.
 
 It supports **admins, managers, teachers, and students**, with features for **courses, classes, lectures, enrollments, attendance, grading, reports, and study materials**.
 
@@ -20,6 +20,7 @@ It supports **admins, managers, teachers, and students**, with features for **co
 
 - **Enrollments & attendance**
   - Enroll students in classes; approval flow (teacher/manager/admin).
+  - Students can view **My classes** and request enrollment in classes of **public** courses (subject to approval).
   - Attendance per lecture with simple or detailed modes (Present/Late/Excused/Absent).
   - Credited minutes/hours per student and per class.
 
@@ -57,22 +58,24 @@ It supports **admins, managers, teachers, and students**, with features for **co
 1. **Clone / copy the project** into your web root, e.g.:
    - `c:\wamp64\www\development-class`
 
-2. **Create the database** (name is configurable):
-   - Example:
-     - `CREATE DATABASE development_class CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
-
-3. **Configure database connection**
+2. **Configure database connection**
    - Edit `config/database.php` and adjust:
      - `db_host`, `db_name`, `db_user`, `db_pass`.
 
-4. **Run migrations**
-   - Import the SQL files under `migrations/` into your database (in order: `001_...`, `002_...`, `003_...` etc.) using your preferred tool (phpMyAdmin, MySQL CLI, etc.).
+3. **Run setup script (recommended)**
+   - From the project directory, run:
+     - `php setup.php`
+   - This will:
+     - Create the database if it does not exist.
+     - Run all SQL files under `migrations/` in order, only once each.
 
-5. **Access the app**
+   If you prefer to run SQL manually, you can still import the files in `migrations/` using phpMyAdmin or the MySQL CLI.
+
+4. **Access the app**
    - In a browser:
      - `http://localhost/development-class/index.php?route=login`
 
-6. **Initial admin login**
+5. **Initial admin login**
    - The initial admin user is created by the first migration.
    - Default credentials (from migration):
      - Email: `admin@example.com`
@@ -94,7 +97,6 @@ It supports **admins, managers, teachers, and students**, with features for **co
 
 High-level ideas are tracked in `TODO.md`. Highlights include:
 
-- Student self-service enrollment in public courses.
 - Per-student attendance overview pages.
 - Password reset (no SMTP dependency).
 - Dark mode, report exports, calendar views.

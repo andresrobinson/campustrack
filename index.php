@@ -43,6 +43,10 @@ $router->post('/register', [\App\Controllers\AuthController::class, 'register'])
 
 $router->get('/dashboard', [\App\Controllers\DashboardController::class, 'index']);
 
+// Student area
+$router->get('/student/classes', [\App\Controllers\StudentController::class, 'classes']);
+$router->post('/student/enroll', [\App\Controllers\StudentController::class, 'requestEnrollment']);
+
 // Courses (admin/manager)
 $router->get('/courses', [\App\Controllers\CourseController::class, 'index']);
 $router->get('/courses/create', [\App\Controllers\CourseController::class, 'create']);

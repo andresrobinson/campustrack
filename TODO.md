@@ -9,6 +9,7 @@
 5. **Per-student attendance view** – Dedicated view for a student’s attendance across lectures/classes.
 6. **Course-level GPA aggregation** – When a student took multiple classes of the same course, use the highest grade for the course.
 7. **Password reset** – Implement flow (code ready but not active due to lack of SMTP).
+8. **Setup script / installer** – CLI or web-based setup to create the database (if needed), run migrations in order, and perform basic environment checks for a smoother first-time installation.
 
 ---
 
@@ -23,6 +24,12 @@
 14. **UI/UX polish** – General improvements: loading states, better mobile layout, accessibility.
 15. **Dark mode** – Theme toggle (light/dark) with preference persisted (e.g. cookie or user setting).
 16. **Invite codes & QR registration** – Invite code system (optionally scoped to course/class) with QR-code links to `/register`, per-code `auto_approve` flag (pending vs auto-active), and a global default in settings.
+17. **Security hardening** – Basic rate limiting / lockout on login, session hardening (ID regeneration, secure cookie flags), and optional audit log for critical admin actions.
+18. **Backup & export tools** – Simple admin interface or CLI commands to export/import core data (users, courses, classes, enrollments, attendance, grades) as SQL or CSV.
+19. **Demo data seeder** – Script to populate demo courses, classes, students, enrollments, and attendance for quick testing or screenshots.
+20. **Automated tests** – Add a small PHPUnit test suite for key business rules (attendance crediting, enrollment constraints, GPA formulas).
+21. **Dev environment / CI** – Optional Docker/devcontainer setup plus a GitHub Actions workflow to run tests and basic checks on each push.
+22. **Read-only JSON API** – Lightweight API endpoints (e.g. list courses/classes/attendance summaries) to allow external integrations or dashboards.
 
 ---
 

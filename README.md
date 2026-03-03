@@ -98,9 +98,7 @@ It supports **admins, managers, teachers, and students**, with features for **co
 High-level ideas are tracked in `TODO.md`. Highlights include:
 
 - Per-student attendance overview pages.
-- Password reset (no SMTP dependency).
 - Dark mode, report exports, calendar views.
-- Invite-code + QR-based registration options.
 
 ---
 

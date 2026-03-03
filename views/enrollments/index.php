@@ -5,7 +5,10 @@
 ?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="mb-0"><?= __('Enrollments') ?></h1>
-    <a href="<?= url('enrollments/create', ['class_id' => $class['id']]) ?>" class="btn btn-primary"><?= __('Enroll student') ?></a>
+    <div class="d-flex gap-2">
+        <a href="<?= url('invites/class', ['class_id' => $class['id']]) ?>" class="btn btn-outline-secondary btn-sm"><?= __('Create class invite') ?></a>
+        <a href="<?= url('enrollments/create', ['class_id' => $class['id']]) ?>" class="btn btn-primary"><?= __('Enroll student') ?></a>
+    </div>
 </div>
 <p class="text-muted"><?= htmlspecialchars($class['course_name'] . ' – ' . $class['code'] . ' ' . $class['name']) ?></p>
 <?php if (!empty($pending)): ?>

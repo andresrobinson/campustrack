@@ -39,6 +39,22 @@
     </div>
 </div>
 
+<div class="card mb-4">
+    <div class="card-body">
+        <h2 class="h5"><?= __('Join class with invite code') ?></h2>
+        <form method="post" action="<?= url('student/enroll-by-code') ?>" class="row g-2 align-items-end">
+            <div class="col-sm-6 col-md-4">
+                <label for="invite_code" class="form-label"><?= __('Invite code') ?></label>
+                <input type="text" class="form-control" id="invite_code" name="invite_code" required
+                       value="<?= htmlspecialchars($_POST['invite_code'] ?? '') ?>">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-primary mt-2 mt-sm-0"><?= __('Use code') ?></button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="mb-3">
     <h2 class="h4 mb-0"><?= __('Available classes') ?></h2>
     <p class="text-muted small mb-0"><?= __('You can request enrollment in classes of public courses. A teacher or manager must approve your request.') ?></p>

@@ -5,15 +5,21 @@ namespace Core;
 class Auth
 {
     private const SESSION_KEY = 'user_id';
+    private const MAX_FAILED_ATTEMPTS = 5;
+    private const LOCKOUT_MINUTES = 15;
 
     public static function login(string $email, string $password, \PDO $pdo): bool
     {
         $stmt = $pdo->prepare(
-            'SELECT id, name, email, password_hash, role, status FROM users WHERE email = ? AND deleted_at IS NULL'
+            'SELECT id, name, email, password_hash, role, status, preferred_language, failed_login_attempts, locked_until
+             FROM users WHERE email = ? AND deleted_at IS NULL'
         );
         $stmt->execute([$email]);
         $user = $stmt->fetch();
         if (!$user) {
+            return false;
+        }
+        if (!empty($user['locked_until']) && $user['locked_until'] > date('Y-m-d H:i:s')) {
             return false;
         }
         if ($user['status'] !== 'active') {
@@ -23,12 +29,32 @@ class Auth
         $valid = password_verify($password, $hash)
             || (strlen($hash) === 64 && hash_equals(hash('sha256', $password), $hash));
         if (!$valid) {
+            $stmt = $pdo->prepare(
+                'UPDATE users
+                 SET failed_login_attempts = failed_login_attempts + 1,
+                     locked_until = CASE
+                         WHEN failed_login_attempts + 1 >= :max THEN DATE_ADD(NOW(), INTERVAL :mins MINUTE)
+                         ELSE locked_until
+                     END
+                 WHERE id = :id'
+            );
+            $stmt->execute([
+                ':max' => self::MAX_FAILED_ATTEMPTS,
+                ':mins' => self::LOCKOUT_MINUTES,
+                ':id' => $user['id'],
+            ]);
             return false;
         }
+        // Successful login: reset counters
+        $stmt = $pdo->prepare(
+            'UPDATE users SET failed_login_attempts = 0, locked_until = NULL WHERE id = ?'
+        );
+        $stmt->execute([$user['id']]);
         $_SESSION[self::SESSION_KEY] = (int) $user['id'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_email'] = $user['email'];
         $_SESSION['user_role'] = $user['role'];
+        $_SESSION['user_lang'] = $user['preferred_language'] ?? null;
         return true;
     }
 

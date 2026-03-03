@@ -40,6 +40,10 @@ class UserController
         $name = trim($_POST['name'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
+        $preferredLanguage = $_POST['preferred_language'] ?? null;
+        if (!in_array($preferredLanguage, ['en', 'pt_BR'], true)) {
+            $preferredLanguage = null;
+        }
         $role = $_POST['role'] ?? 'student';
         if (!in_array($role, ['admin', 'manager', 'teacher', 'student'], true)) {
             $role = 'student';
@@ -57,8 +61,8 @@ class UserController
         }
         $status = in_array($role, ['admin', 'manager', 'teacher'], true) ? 'active' : 'pending';
         $hash = password_hash($password ?: bin2hex(random_bytes(8)), PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (name, email, password_hash, role, status, approved_at) VALUES (?, ?, ?, ?, ?, ?)');
-        $stmt->execute([$name, $email, $hash, $role, $status, $status === 'active' ? date('Y-m-d H:i:s') : null]);
+        $stmt = $pdo->prepare('INSERT INTO users (name, email, password_hash, role, preferred_language, status, approved_at) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$name, $email, $hash, $role, $preferredLanguage, $status, $status === 'active' ? date('Y-m-d H:i:s') : null]);
         flash_set('success', __('User created successfully.'));
         redirect('users');
     }

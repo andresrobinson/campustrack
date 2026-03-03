@@ -31,13 +31,18 @@ function lang(): string
 {
     static $lang = null;
     if ($lang === null) {
-        try {
-            $pdo = db();
-            $stmt = $pdo->query("SELECT value FROM settings WHERE `key` = 'default_language' LIMIT 1");
-            $row = $stmt->fetch();
-            $lang = $row ? $row['value'] : 'en';
-        } catch (Throwable $e) {
-            $lang = 'en';
+        $userLang = $_SESSION['user_lang'] ?? null;
+        if ($userLang) {
+            $lang = $userLang;
+        } else {
+            try {
+                $pdo = db();
+                $stmt = $pdo->query("SELECT value FROM settings WHERE `key` = 'default_language' LIMIT 1");
+                $row = $stmt->fetch();
+                $lang = $row ? $row['value'] : 'en';
+            } catch (Throwable $e) {
+                $lang = 'en';
+            }
         }
     }
     return $lang;

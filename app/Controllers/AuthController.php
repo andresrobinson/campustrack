@@ -54,6 +54,7 @@ class AuthController
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $passwordConfirm = $_POST['password_confirmation'] ?? '';
+        $inviteCode = trim($_POST['invite_code'] ?? '');
 
         if ($name === '' || $email === '' || $password === '') {
             flash_set('error', __('Name, email and password are required.'));
@@ -77,19 +78,40 @@ class AuthController
             flash_set('error', __('This email is already registered.'));
             redirect('register');
         }
-
+        $status = 'pending';
+        $approvedAt = null;
+        if ($inviteCode !== '') {
+            $invite = \App\Models\InviteCode::findByCode($pdo, $inviteCode);
+            if (!$invite || $invite['class_id'] || !\App\Models\InviteCode::isUsable($invite)) {
+                flash_set('error', __('Invalid or expired invite code.'));
+                redirect('register');
+            }
+            if (!empty($invite['auto_approve'])) {
+                $status = 'active';
+                $approvedAt = date('Y-m-d H:i:s');
+            }
+        }
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (name, email, password_hash, role, status, approved_at) VALUES (?, ?, ?, ?, ?, ?)');
+        $userLang = lang();
+        $stmt = $pdo->prepare('INSERT INTO users (name, email, password_hash, role, preferred_language, status, approved_at) VALUES (?, ?, ?, ?, ?, ?, ?)');
         $stmt->execute([
             $name,
             $email,
             $hash,
             'student',
-            'pending',
-            null,
+            $userLang,
+            $status,
+            $approvedAt,
         ]);
+        if ($inviteCode !== '' && isset($invite) && $invite) {
+            \App\Models\InviteCode::incrementUse($pdo, (int) $invite['id']);
+        }
 
-        flash_set('success', __('Registration received. Please wait for manager approval before logging in.'));
+        if ($status === 'active') {
+            flash_set('success', __('Registration approved. You can log in now.'));
+        } else {
+            flash_set('success', __('Registration received. Please wait for manager approval before logging in.'));
+        }
         redirect('login');
     }
 }

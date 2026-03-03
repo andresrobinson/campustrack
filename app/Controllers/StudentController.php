@@ -90,6 +90,52 @@ class StudentController
         redirect('student/classes');
     }
 
+    public function enrollWithCode(): void
+    {
+        if (!Auth::check() || !Auth::isStudent()) {
+            redirect('login');
+        }
+        $code = trim($_POST['invite_code'] ?? '');
+        if ($code === '') {
+            flash_set('error', __('Invite code is required.'));
+            redirect('student/classes');
+        }
+        $pdo = db();
+        $invite = \App\Models\InviteCode::findByCode($pdo, $code);
+        if (!$invite || !$invite['class_id'] || !\App\Models\InviteCode::isUsable($invite)) {
+            flash_set('error', __('Invalid or expired invite code.'));
+            redirect('student/classes');
+        }
+        $class = SchoolClass::find($pdo, (int) $invite['class_id']);
+        if (!$class) {
+            flash_set('error', __('Class not found.'));
+            redirect('student/classes');
+        }
+        $studentId = Auth::id();
+        if (Enrollment::exists($pdo, (int) $class['id'], $studentId)) {
+            flash_set('error', __('You are already enrolled in this class.'));
+            redirect('student/classes');
+        }
+        $status = !empty($invite['auto_approve']) ? 'approved' : 'pending';
+        Enrollment::create($pdo, (int) $class['id'], $studentId, $status, null);
+        \App\Models\InviteCode::incrementUse($pdo, (int) $invite['id']);
+        $hasOther = Enrollment::hasOtherEnrollmentInCourse($pdo, (int) $class['course_id'], $studentId, (int) $class['id']);
+        if ($status === 'approved') {
+            if ($hasOther) {
+                flash_set('success', __('Enrollment approved. Note: you are already enrolled in another class of this course.'));
+            } else {
+                flash_set('success', __('Enrollment approved.'));
+            }
+        } else {
+            if ($hasOther) {
+                flash_set('success', __('Enrollment requested. Note: you are already enrolled in another class of this course.'));
+            } else {
+                flash_set('success', __('Enrollment requested.'));
+            }
+        }
+        redirect('student/classes');
+    }
+
     private function render(string $view, array $data = []): string
     {
         extract($data, EXTR_SKIP);

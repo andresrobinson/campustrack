@@ -37,6 +37,12 @@ $router->get('/login', [\App\Controllers\AuthController::class, 'showLogin']);
 $router->post('/login', [\App\Controllers\AuthController::class, 'login']);
 $router->post('/logout', [\App\Controllers\AuthController::class, 'logout']);
 
+// Password reset
+$router->get('/password/forgot', [\App\Controllers\PasswordController::class, 'showForgot']);
+$router->post('/password/forgot', [\App\Controllers\PasswordController::class, 'sendReset']);
+$router->get('/password/reset', [\App\Controllers\PasswordController::class, 'showReset']);
+$router->post('/password/reset', [\App\Controllers\PasswordController::class, 'reset']);
+
 // Student self-registration
 $router->get('/register', [\App\Controllers\AuthController::class, 'showRegister']);
 $router->post('/register', [\App\Controllers\AuthController::class, 'register']);
@@ -46,6 +52,7 @@ $router->get('/dashboard', [\App\Controllers\DashboardController::class, 'index'
 // Student area
 $router->get('/student/classes', [\App\Controllers\StudentController::class, 'classes']);
 $router->post('/student/enroll', [\App\Controllers\StudentController::class, 'requestEnrollment']);
+$router->post('/student/enroll-by-code', [\App\Controllers\StudentController::class, 'enrollWithCode']);
 
 // Courses (admin/manager)
 $router->get('/courses', [\App\Controllers\CourseController::class, 'index']);
@@ -99,6 +106,13 @@ $router->post('/users/create', [\App\Controllers\UserController::class, 'store']
 // Student registration approval (admin/manager)
 $router->post('/users/approve', [\App\Controllers\UserController::class, 'approve']);
 $router->post('/users/reject', [\App\Controllers\UserController::class, 'reject']);
+
+// Invite codes
+$router->get('/invites', [\App\Controllers\InviteCodeController::class, 'index']);
+$router->get('/invites/create', [\App\Controllers\InviteCodeController::class, 'create']);
+$router->post('/invites/create', [\App\Controllers\InviteCodeController::class, 'store']);
+$router->get('/invites/class', [\App\Controllers\InviteCodeController::class, 'createForClass']);
+$router->post('/invites/class', [\App\Controllers\InviteCodeController::class, 'storeForClass']);
 
 // Assessments & grades
 $router->get('/assessments', [\App\Controllers\AssessmentController::class, 'index']);

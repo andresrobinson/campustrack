@@ -22,6 +22,14 @@ $isEdit = $user !== null;
                     <input type="password" class="form-control" id="password" name="password" placeholder="<?= __('Leave blank to generate') ?>">
                 </div>
                 <div class="col-md-6">
+                    <label for="preferred_language" class="form-label"><?= __('Preferred language') ?></label>
+                    <select class="form-select" id="preferred_language" name="preferred_language">
+                        <option value=""><?= __('Default') ?></option>
+                        <option value="en" <?= ($_POST['preferred_language'] ?? '') === 'en' ? 'selected' : '' ?>>English</option>
+                        <option value="pt_BR" <?= ($_POST['preferred_language'] ?? '') === 'pt_BR' ? 'selected' : '' ?>>Português (Brasil)</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
                     <label for="role" class="form-label"><?= __('role_label') ?></label>
                     <select class="form-select" id="role" name="role">
                         <option value="teacher" <?= ($_POST['role'] ?? '') === 'teacher' ? 'selected' : '' ?>><?= __('Teacher') ?></option>

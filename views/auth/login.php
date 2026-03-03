@@ -28,6 +28,9 @@
                 </div>
                 <button type="submit" class="btn btn-primary w-100"><?= __('login') ?></button>
             </form>
+            <div class="mt-2 mb-3 text-end">
+                <a href="<?= url('password/forgot') ?>" class="small"><?= __('Forgot your password?') ?></a>
+            </div>
             <hr class="my-4">
             <div class="text-center">
                 <p class="small mb-1"><?= __('New student? Register below.') ?></p>

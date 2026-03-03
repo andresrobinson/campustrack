@@ -209,5 +209,6 @@ return [
     'This class does not accept self-enrollment.' => 'This class does not accept self-enrollment.',
     'You are already enrolled in this class.' => 'You are already enrolled in this class.',
     'Enrollment requested. Note: you are already enrolled in another class of this course.' => 'Enrollment requested. Note: you are already enrolled in another class of this course.',
+    'Enrollment requested. Note: student is already enrolled in another class of this course.' => 'Enrollment requested. Note: student is already enrolled in another class of this course.',
     'Enrollment approved. Note: student is already enrolled in another class of this course.' => 'Enrollment approved. Note: student is already enrolled in another class of this course.',
 ];

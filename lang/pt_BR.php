@@ -209,5 +209,6 @@ return [
     'This class does not accept self-enrollment.' => 'Esta turma não aceita auto-matrícula.',
     'You are already enrolled in this class.' => 'Você já está matriculado nesta turma.',
     'Enrollment requested. Note: you are already enrolled in another class of this course.' => 'Matrícula solicitada. Observação: você já está matriculado em outra turma deste curso.',
+    'Enrollment requested. Note: student is already enrolled in another class of this course.' => 'Matrícula solicitada. Observação: o aluno já está matriculado em outra turma deste curso.',
     'Enrollment approved. Note: student is already enrolled in another class of this course.' => 'Matrícula aprovada. Observação: o aluno já está matriculado em outra turma deste curso.',
 ];

@@ -21,7 +21,7 @@
                 <div class="mb-3">
                     <label for="invite_code" class="form-label"><?= __('Invite code') ?> (<?= __('Optional') ?>)</label>
                     <input type="text" class="form-control" id="invite_code" name="invite_code"
-                           value="<?= htmlspecialchars($_POST['invite_code'] ?? '') ?>">
+                           value="<?= htmlspecialchars($_POST['invite_code'] ?? ($_GET['invite_code'] ?? '')) ?>">
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label"><?= __('Name') ?></label>

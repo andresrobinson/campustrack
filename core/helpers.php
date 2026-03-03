@@ -97,3 +97,10 @@ function flash_set(string $key, string $message): void
 {
     $_SESSION['flash'][$key] = $message;
 }
+
+function base_url(): string
+{
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    return $scheme . '://' . $host;
+}

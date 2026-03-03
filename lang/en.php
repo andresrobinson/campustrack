@@ -243,4 +243,5 @@ return [
     'Password is required.' => 'Password is required.',
     'Password has been reset. You can log in now.' => 'Password has been reset. You can log in now.',
     'Forgot your password?' => 'Forgot your password?',
+    'QR' => 'QR',
 ];

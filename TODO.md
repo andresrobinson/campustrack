@@ -21,7 +21,6 @@
 16. **Automated tests** – Add a small PHPUnit test suite for key business rules (attendance crediting, enrollment constraints, GPA formulas).
 17. **Dev environment / CI** – Optional Docker/devcontainer setup plus a GitHub Actions workflow to run tests and basic checks on each push.
 18. **Read-only JSON API** – Lightweight API endpoints (e.g. list courses/classes/attendance summaries) to allow external integrations or dashboards.
-19. **Invite QR codes** – Generate and display QR codes for invite links to simplify registration and enrollment.
 
 ## C. Completed items (from this list)
 
@@ -32,7 +31,7 @@
 - **Per-user language preference** – Override global language per user (e.g. student sees PT-BR, teacher sees EN).
 - **Password reset** – Implemented using `password_resets` table with development-only reset links (no SMTP required).
 - **Security hardening (login lockout)** – Basic rate limiting / lockout on login via `failed_login_attempts` and `locked_until`.
-- **Invite codes for registration and enrollment** – Invite code system for student registration (admin/manager) and class enrollment (teachers/managers/admins), with `auto_approve`, usage limits, and expiry.
+- **Invite codes for registration and enrollment** – Invite code system for student registration (admin/manager) and class enrollment (teachers/managers/admins), with `auto_approve`, usage limits, expiry and QR codes for easier sharing.
 
 ---
 

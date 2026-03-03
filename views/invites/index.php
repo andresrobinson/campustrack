@@ -20,6 +20,7 @@
                             <th><?= __('Max uses') ?></th>
                             <th><?= __('Used') ?></th>
                             <th><?= __('Expires at') ?></th>
+                            <th><?= __('QR') ?></th>
                             <th><?= __('Note') ?></th>
                         </tr>
                     </thead>
@@ -40,6 +41,19 @@
                                 <td><?= $c['max_uses'] !== null ? (int) $c['max_uses'] : '∞' ?></td>
                                 <td><?= (int) $c['used_count'] ?></td>
                                 <td><?= $c['expires_at'] ? htmlspecialchars($c['expires_at']) : '–' ?></td>
+                                <td>
+                                    <?php
+                                    // For registration invites, QR encodes a direct registration URL with the invite code.
+                                    // For class invites, QR encodes just the raw code (to be pasted into the student portal).
+                                    if (empty($c['class_id']) && empty($c['course_id'])) {
+                                        $qrData = base_url() . url('register', ['invite_code' => $c['code']]);
+                                    } else {
+                                        $qrData = $c['code'];
+                                    }
+                                    $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' . urlencode($qrData);
+                                    ?>
+                                    <img src="<?= htmlspecialchars($qrUrl) ?>" alt="<?= __('QR') ?>" class="img-thumbnail">
+                                </td>
                                 <td><?= htmlspecialchars($c['note'] ?? '') ?></td>
                             </tr>
                         <?php endforeach; ?>

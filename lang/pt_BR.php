@@ -243,4 +243,5 @@ return [
     'Password is required.' => 'Senha é obrigatória.',
     'Password has been reset. You can log in now.' => 'Senha redefinida. Você já pode entrar.',
     'Forgot your password?' => 'Esqueceu sua senha?',
+    'QR' => 'QR',
 ];
